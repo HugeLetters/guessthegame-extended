@@ -10,6 +10,7 @@ const options = {
   format: "iife",
   legalComments: "eof",
   logLevel: "info",
+  sourcemap: "inline",
   plugins: [
     {
       name: "CRX reloader",
