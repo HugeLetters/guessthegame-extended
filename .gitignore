@@ -1,0 +1,5 @@
+dist/**/*.js
+node_modules
+todo.md
+dist/index.css
+.js
