@@ -1,5 +1,6 @@
 import guessesData from "./guessesData";
 import { normalizeGameName, prefixLogMessage } from "./utils";
+import fastdom from "fastdom";
 
 const noInputNodeLog = prefixLogMessage("Couldn' find input element to attach to");
 const noSearchResultsLog = prefixLogMessage("Couldn't find element with search results");
@@ -8,6 +9,9 @@ const triedGameClass =
   " after:content-[attr(data-tries)_'_tries'] after:text-neutral-900 after:text-xs after:font-extrabold after:bg-neutral-400 after:rounded-md after:py-1 after:px-2 after:ml-1 after:border after:border-solid after:border-neutral-900 after:whitespace-nowrap";
 
 export default function setSearchResults() {
+  if (document.querySelector<HTMLDivElement>("div.result")?.innerText.includes("The answer was"))
+    return;
+
   const inputNode = document.querySelector("div.input-area");
   if (!inputNode) return console.error(noInputNodeLog);
 
@@ -47,27 +51,35 @@ function newSearchHandler(addedNodes: NodeList) {
   });
 }
 function updateSearchHandler(mutation: MutationRecord) {
-  if (
-    !(mutation.target instanceof HTMLLIElement) ||
-    !mutation.oldValue ||
-    mutation.target.className.includes(mutation.oldValue)
-  )
-    return;
-
-  if (mutation.target.dataset.tries) mutation.target.className += triedGameClass;
-  if (mutation.target.dataset.guessed === "true") mutation.target.className += guessedGameClass;
+  fastdom.measure(() => {
+    const { target } = mutation;
+    if (
+      !(target instanceof HTMLLIElement) ||
+      !mutation.oldValue ||
+      target.className.includes(mutation.oldValue)
+    )
+      return;
+    fastdom.mutate(() => {
+      if (target.dataset.tries) target.className += triedGameClass;
+      if (target.dataset.guessed === "true") target.className += guessedGameClass;
+    });
+  });
 }
 
 function updateSearchResult(node: HTMLLIElement) {
-  const gameData = guessesData.get(normalizeGameName(node.innerText));
-  if (!gameData) return;
+  fastdom.measure(() => {
+    const gameData = guessesData.get(normalizeGameName(node.innerText));
+    if (!gameData) return;
 
-  const { guessed, tries } = gameData;
-  node.setAttribute("data-tries", tries.toString());
-  node.className += triedGameClass;
+    const { guessed, tries } = gameData;
+    fastdom.mutate(() => {
+      node.setAttribute("data-tries", tries.toString());
+      node.className += triedGameClass;
 
-  if (!guessed) return;
+      if (!guessed) return;
 
-  node.setAttribute("data-guessed", "true");
-  node.className += guessedGameClass;
+      node.setAttribute("data-guessed", "true");
+      node.className += guessedGameClass;
+    });
+  });
 }

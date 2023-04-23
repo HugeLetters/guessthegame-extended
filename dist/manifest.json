@@ -21,6 +21,12 @@
     }
   ],
   "permissions": [],
+  "web_accessible_resources": [
+    {
+      "resources": ["*.js.map"],
+      "matches": ["https://guessthe.game/*"]
+    }
+  ],
   "author": {
     "email": "ckuka71@gmail.com"
   }

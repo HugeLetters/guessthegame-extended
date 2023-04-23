@@ -17,9 +17,7 @@ export default function setTopNavigation() {
   gameIndexDiv.setAttribute("style", "");
   const gameIndex = parseInt(gameIndexDiv.innerText.match(/\d+/)?.[0] ?? "");
   if (isNaN(gameIndex)) console.error(incorrectGameIndexLog);
-
   const latestGameIndex = getLatestGameIndex();
-
   createRoot(gameIndexDiv).render(
     <NavigationMenu
       index={gameIndex || latestGameIndex}

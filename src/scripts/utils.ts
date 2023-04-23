@@ -20,3 +20,6 @@ export function getGameGuess(gameIndex: number, guessIndex: number) {
 export function normalizeGameName(name: string) {
   return name.replace(/[-():!]/g, "").toLowerCase();
 }
+
+export const clueSelectionDiv = document.querySelector("div.current-game div.image-selector");
+if (!clueSelectionDiv) console.error(prefixLogMessage("Couldn't find clue selection section"));
