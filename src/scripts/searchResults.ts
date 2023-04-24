@@ -15,7 +15,16 @@ export default function setSearchResults() {
   const inputNode = document.querySelector("div.input-area");
   if (!inputNode) return console.error(noInputNodeLog);
 
-  let searchResultListObserver = new MutationObserver(() => null);
+  const searchResultListObserver = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      switch (mutation.type) {
+        case "attributes":
+          return updateSearchHandler(mutation);
+        case "childList":
+          return newSearchHandler(mutation.addedNodes);
+      }
+    });
+  });
   new MutationObserver(mutations => {
     if (!mutations.some(({ addedNodes: { length } }) => !!length)) return;
 
@@ -24,16 +33,6 @@ export default function setSearchResults() {
     searchResults.querySelectorAll("li").forEach(updateSearchResult);
 
     searchResultListObserver.disconnect();
-    searchResultListObserver = new MutationObserver(mutations => {
-      mutations.forEach(mutation => {
-        switch (mutation.type) {
-          case "attributes":
-            return updateSearchHandler(mutation);
-          case "childList":
-            return newSearchHandler(mutation.addedNodes);
-        }
-      });
-    });
     searchResultListObserver.observe(searchResults, {
       childList: true,
       subtree: true,
