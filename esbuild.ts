@@ -1,11 +1,12 @@
-import { build, context } from "esbuild";
+import { build, context, type BuildOptions } from "esbuild";
 import open from "open";
 import fs from "fs/promises";
-import { zip } from "zip-a-folder";
+import fsSync from "fs";
+import archiver from "archiver";
 
 const prod = process.argv[2] === "-b";
 
-const options = {
+const options: BuildOptions = {
   entryPoints: ["./src/index.ts", "./src/scripts/mainPage.ts", "./src/background.ts"],
   bundle: true,
   outdir: "dist",
@@ -33,7 +34,12 @@ prod ? buildForProd() : watch();
 function buildForProd() {
   build(options).then(result => {
     fs.writeFile("meta.json", JSON.stringify(result.metafile));
-    zip("dist", "extension.zip");
+    const archive = archiver("zip", {
+      zlib: { level: 9 }, // Sets the compression level.
+    });
+    archive.pipe(fsSync.createWriteStream("./extension.zip"));
+    archive.directory("dist/", false);
+    archive.finalize();
   });
 }
 

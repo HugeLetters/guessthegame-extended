@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"node ./esbuild.mjs\" \"tailwindcss -o ./dist/index.css -m -w\"",
-    "build": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"node ./esbuild.mjs -b\" \"tailwindcss -o ./dist/index.css -m \""
+    "dev": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"tsx ./esbuild.ts\" \"tailwindcss -o ./dist/index.css -m -w\"",
+    "build": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"tsx ./esbuild.ts -b\" \"tailwindcss -o ./dist/index.css -m \""
   },
   "keywords": [
     "guesstthegame",
@@ -15,18 +15,20 @@
   "author": "Huge Letters",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@types/archiver": "^5.3.2",
     "@types/chrome": "^0.0.233",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
+    "archiver": "^5.3.1",
     "concurrently": "^8.0.1",
     "esbuild": "^0.17.17",
     "eslint": "^8.38.0",
     "eslint-plugin-react": "^7.32.2",
     "open": "^9.1.0",
-    "zip-a-folder": "^1.1.5"
+    "tsx": "^3.12.6"
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
@@ -35,7 +37,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
-    "tailwindcss": "^3.3.1",
-    "zod": "^3.21.4"
+    "tailwindcss": "^3.3.1"
   }
 }

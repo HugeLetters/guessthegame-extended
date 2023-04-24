@@ -12,7 +12,8 @@
 
     /* Language and Environment */
     "target": "ES6" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-    // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    // "lib": ["ES2022"], // ES2020 in earlier versions
+    /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     "jsx": "react-jsx" /* Specify what JSX code is generated. */,
     // "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
     // "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
@@ -40,7 +41,7 @@
 
     /* JavaScript Support */
     // "allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
-    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+    // "checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
     // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
     /* Emit */
