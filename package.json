@@ -1,12 +1,19 @@
 {
+  "manifest": {
+    "manifest_version": 3,
+    "name": "guessthegame extended"
+  },
   "name": "guessthegame-extended",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "A few QoL improvement for the guessthe.game website",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"tsx ./esbuild.ts\" \"tailwindcss -o ./dist/index.css -m -w\"",
-    "build": "concurrently -n \"esbuild,tailwind\" -c \"yellow,blue\" \"tsx ./esbuild.ts -b\" \"tailwindcss -o ./dist/index.css -m \""
+    "dev": "plasmo dev",
+    "build": "plasmo build",
+    "package": "plasmo package",
+    "old:dev": "tailwindcss -o ./dist/index.css -m -w",
+    "old:build": "tailwindcss -o ./dist/index.css -m"
   },
   "keywords": [
     "guesstthegame",
@@ -14,25 +21,24 @@
   ],
   "author": "Huge Letters",
   "license": "UNLICENSED",
+  "homepage": "https://github.com/HugeLetters/guessthegame-extended",
   "devDependencies": {
-    "@types/archiver": "^5.3.2",
     "@types/chrome": "^0.0.233",
     "@types/node": "^18.15.11",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
-    "archiver": "^5.3.1",
-    "concurrently": "^8.0.1",
-    "esbuild": "^0.17.17",
     "eslint": "^8.38.0",
-    "eslint-plugin-react": "^7.32.2",
-    "open": "^9.1.0",
-    "tsx": "^3.12.6"
+    "prettier": "^2.8.7",
+    "typescript": "^5.0.3",
+    "@plasmohq/prettier-plugin-sort-imports": "^3.6.4",
+    "eslint-plugin-react": "^7.32.2"
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
     "fastdom": "^1.0.11",
+    "plasmo": "^0.69.2",
     "postcss": "^8.4.22",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

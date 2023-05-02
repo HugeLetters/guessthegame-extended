@@ -1,8 +1,23 @@
-dist/**/*.js
-dist/**/*.js.map
+# modules
 node_modules
+
+# env
+.env*
+
+# build
+out
+build
+dist
+
+# personal notes
 todo.md
-dist/index.css
-.js
-meta.json
-extension.zip
+
+
+# plasmo - https://www.plasmo.com
+.plasmo
+
+# bpp - http://bpp.browser.market/
+keys.json
+
+# typescript
+.tsbuildinfo

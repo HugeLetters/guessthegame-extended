@@ -1,39 +1,58 @@
-import { getGameStatus, getLatestGameIndex, prefixLogMessage } from "./utils";
+import cssText from "data-text:./searchBar.pcss";
+import type { PlasmoCSConfig, PlasmoMountShadowHost } from "plasmo";
+import type { PlasmoGetShadowHostId } from "plasmo";
+import type { PlasmoGetInlineAnchor } from "plasmo";
 import { HiArrowDown, HiArrowLeft, HiArrowRight } from "react-icons/hi";
-import { createRoot } from "react-dom/client";
 import { IconContext } from "react-icons/lib";
 
-const noGameIndexDivLog = prefixLogMessage("Couldn't find an element with current game index");
-const gameIndexDivQuerySelector = "div.current-game>div.current-game-number";
+import { getGameStatus } from "../utils/utils";
 
-const incorrectGameIndexLog = prefixLogMessage("Game index is in incorrect format");
+export const config: PlasmoCSConfig = {
+  matches: ["https://guessthe.game/", "https://guessthe.game/?fpg=*"],
+  run_at: "document_end",
+  all_frames: true,
+};
+
+export const getStyle = () => {
+  console.log("Getting style");
+  const style = document.createElement("style");
+  style.textContent = cssText;
+  return style;
+};
+
+export const mountShadowHost: PlasmoMountShadowHost = ({ anchor, shadowHost }) => {
+  console.log("Mounting shadow host");
+  if (!anchor) return;
+  anchor.element.innerHTML = "";
+  anchor.element.appendChild(shadowHost);
+};
+
+const gameAnchor = document.querySelector<HTMLDivElement>(
+  "div.current-game>div.current-game-number"
+);
+
+export const getInlineAnchor: PlasmoGetInlineAnchor = () => {
+  console.log("Getting inline anchor");
+  if (!gameAnchor) throw new Error("No element with current game index found");
+  return gameAnchor;
+};
+export const getShadowHostId: PlasmoGetShadowHostId = () => "custom-top-navbar";
+
 const winClass = " bg-win";
 const loseClass = " bg-fail";
+export default function NavigationMenu() {
+  console.log("Setting top navbar");
 
-export default function setTopNavigation() {
-  const gameIndexDiv = document.querySelector<HTMLDivElement>(gameIndexDivQuerySelector);
-  if (!gameIndexDiv) return console.error(noGameIndexDivLog);
+  if (!gameAnchor) return <></>;
+  const latestIndex = getLatestGameIndex();
+  const index = parseInt(gameAnchor.innerText.match(/\d+/)?.[0] ?? "") || latestIndex;
 
-  gameIndexDiv.setAttribute("style", "");
-  const gameIndex = parseInt(gameIndexDiv.innerText.match(/\d+/)?.[0] ?? "");
-  if (isNaN(gameIndex)) console.error(incorrectGameIndexLog);
-  const latestGameIndex = getLatestGameIndex();
-  createRoot(gameIndexDiv).render(
-    <NavigationMenu
-      index={gameIndex || latestGameIndex}
-      latestIndex={latestGameIndex}
-    />
-  );
-}
-
-type NavigationMenuProps = { index: number; latestIndex: number };
-function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
   const prevGameStatus = getGameStatus(index - 1);
   const nextGameStatus = getGameStatus(index + 1);
   const lastGameStatus = getGameStatus(latestIndex);
 
   return (
-    <nav className="flex items-center justify-center gap-1 text-neutral-400 mb-2">
+    <nav className="flex items-center justify-center gap-1 text-neutral-400 mb-2 ">
       <IconContext.Provider value={{ size: "1.9rem" }}>
         <button
           onClick={() => redirectToGameByIndex(index - 1)}
@@ -114,4 +133,10 @@ function redirectToGameByIndex(index: number) {
   const destination = new URL("", location.href);
   destination.searchParams.append("fpg", index.toString());
   location.assign(destination);
+}
+
+function getLatestGameIndex() {
+  return Math.ceil(
+    Math.abs((new Date().valueOf() - new Date("5/15/2022").valueOf()) / (24 * 60 * 60 * 1000))
+  );
 }
