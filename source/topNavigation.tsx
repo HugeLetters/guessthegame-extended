@@ -3,19 +3,34 @@ import { createRoot } from "react-dom/client";
 import { HiArrowDown, HiArrowLeft, HiArrowRight } from "react-icons/hi";
 import { IconContext } from "react-icons/lib";
 
+import { getOption, watchOption } from "./helpers/options";
 import { getGameStatus, getLatestGameIndex, redirectToGameByIndex } from "./helpers/utils";
 
 export function setTopNavigation() {
+  let unmount: () => void = () => void 0;
+  getOption("topNav").then((value = true) => value && (unmount = mountNavigation()));
+  watchOption("topNav", ({ newValue = true }) => {
+    newValue ? (unmount = mountNavigation()) : unmount();
+  });
+}
+
+function mountNavigation() {
   const anchor = document.querySelector<HTMLDivElement>("div.current-game>div.current-game-number");
   if (!anchor) throw new Error("No anchor found for top navbar");
+  const style = anchor.getAttribute("style") ?? "";
   anchor.removeAttribute("style");
 
   const latestIndex = getLatestGameIndex();
-  const index = parseInt(anchor.innerText.match(/\d+/)?.[0] ?? "");
+  const index = parseInt(anchor.innerText.match(/\d+/)?.[0] ?? "") || latestIndex;
 
-  createRoot(anchor).render(
-    <NavigationMenu index={index || latestIndex} latestIndex={latestIndex} />
-  );
+  const root = createRoot(anchor);
+  root.render(<NavigationMenu index={index} latestIndex={latestIndex} />);
+
+  return () => {
+    root.unmount();
+    anchor.innerText = `Game #${index}`;
+    anchor.setAttribute("style", style);
+  };
 }
 
 type NavigationMenuProps = { index: number; latestIndex: number };

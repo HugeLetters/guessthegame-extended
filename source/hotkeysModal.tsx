@@ -2,20 +2,29 @@ import { useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { MdOutlineKeyboardAlt } from "react-icons/md";
 
-import { useOptions } from "./helpers/options";
+import { getOption, useOptions, watchOption } from "./helpers/options";
 
 export function setHotkeysModal() {
+  let unmount: () => void = () => void 0;
+  getOption("hotkeyModal").then((value = true) => value && (unmount = mountModal()));
+  watchOption("hotkeyModal", ({ newValue = true }) =>
+    newValue ? (unmount = mountModal()) : unmount()
+  );
+}
+
+function mountModal() {
   const anchor = document.querySelector("header.Header") ?? document.body;
   const root = document.createElement("div");
   anchor.appendChild(root);
-
   createRoot(root).render(<HotkeysModal />);
+
+  return () => anchor.removeChild(root);
 }
 
 function HotkeysModal() {
   const modal = useRef<HTMLDialogElement>(null);
-  const [topNavOption] = useOptions("Top Navigation", (v) => v ?? true);
-  const [controlsOption] = useOptions("Controls", (v) => v ?? true);
+  const [topNavOption] = useOptions("topNav", (v) => v ?? true);
+  const [controlsOption] = useOptions("controls", (v) => v ?? true);
 
   function openModal() {
     modal.current?.showModal();
@@ -51,8 +60,15 @@ function HotkeysModal() {
               ></path>
             </svg>
           </button>
-          {topNavOption && <p>top navigation hotkeys</p>}
-          {controlsOption && <p>extra hotkeys hotkeys</p>}
+          <p>←/→ - previous/next game</p>
+          {topNavOption && <p>ctrl+↓ - latest game</p>}
+          {controlsOption && (
+            <>
+              <p>ctrl+←/→ - previous/next clue</p>
+              <p>1..6 - go to clue by index</p>
+              <p>alt+s- skip guess</p>
+            </>
+          )}
         </div>
       </dialog>
     </>

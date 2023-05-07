@@ -1,19 +1,30 @@
+import { getOption, watchOption } from "./helpers/options";
+
 export function setControls() {
-  document.addEventListener("keydown", (event) => {
-    if (event.ctrlKey) {
-      if (event.key === "ArrowLeft") return moveClue(-1);
-      if (event.key === "ArrowRight") return moveClue(1);
-      return;
-    }
-    if (event.altKey) {
-      if (event.code === "KeyS") return skip();
-      return;
-    }
-    if (!document.activeElement?.className.includes("game-input")) {
-      const index = parseInt(event.key) - 1;
-      if (!isNaN(index)) goToClue(index);
-    }
+  getOption("controls").then(
+    (value = true) => value && document.addEventListener("keydown", controlEventListener)
+  );
+  watchOption("controls", ({ newValue = true }) => {
+    newValue
+      ? document.addEventListener("keydown", controlEventListener)
+      : document.removeEventListener("keydown", controlEventListener);
   });
+}
+
+function controlEventListener(event: KeyboardEvent) {
+  if (event.ctrlKey) {
+    if (event.key === "ArrowLeft") return moveClue(-1);
+    if (event.key === "ArrowRight") return moveClue(1);
+    return;
+  }
+  if (event.altKey) {
+    if (event.code === "KeyS") return skip();
+    return;
+  }
+  if (!document.activeElement?.className.includes("game-input")) {
+    const index = parseInt(event.key) - 1;
+    if (!isNaN(index)) goToClue(index);
+  }
 }
 
 const clueButtons = document.querySelectorAll<HTMLButtonElement>(

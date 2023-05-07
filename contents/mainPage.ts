@@ -16,9 +16,10 @@ export const config: PlasmoCSConfig = {
 };
 
 (function () {
-  getOption("ARIA fixes").then((toggle = true) => toggle && setARIA());
-  getOption("Controls").then((toggle = true) => toggle && setControls());
-  getOption("Search Bar tips").then((toggle = true) => toggle && setSearchBar());
-  getOption("Top Navigation").then((toggle = true) => toggle && setTopNavigation());
-  getOption("Hotkeys info menu").then((toggle = true) => toggle && setHotkeysModal());
+  setControls();
+  setTopNavigation();
+  setHotkeysModal();
+
+  getOption("aria").then((toggle = true) => toggle && setARIA());
+  getOption("searchBar").then((toggle = true) => toggle && setSearchBar());
 })();
