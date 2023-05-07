@@ -1,23 +1,12 @@
 import fastdom from "fastdom";
 
-// todo - include only relevant css
-import "./searchBar.pcss";
-
-import type { PlasmoCSConfig } from "plasmo";
-
-import { getGameStatus } from "../utils/utils";
-
-export const config: PlasmoCSConfig = {
-  matches: ["https://guessthe.game/", "https://guessthe.game/?fpg=*"],
-  run_at: "document_end",
-  all_frames: true,
-};
+import { getGameStatus } from "./helpers/utils";
 
 const guessedGameClass = " bg-emerald-500";
 const triedGameClass =
   " after:content-[attr(data-tries)_'_tries'] after:text-neutral-900 after:text-xs after:font-extrabold after:bg-neutral-400 after:rounded-md after:py-1 after:px-2 after:ml-1 after:border after:border-solid after:border-neutral-900 after:whitespace-nowrap";
 
-(function () {
+export function setSearchBar() {
   if (document.querySelector<HTMLDivElement>("div.result")?.innerText.includes("The answer was"))
     return;
 
@@ -93,7 +82,7 @@ const triedGameClass =
       });
     });
   }
-})();
+}
 
 type GameGuess = {
   tries: number;

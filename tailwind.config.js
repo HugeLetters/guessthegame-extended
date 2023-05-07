@@ -3,7 +3,7 @@ export default {
   content: [
     "./*.{ts,tsx,js,jsx,html}",
     "./contents/**/*.{ts,tsx,js,tsx}",
-    "./helpers/**/*.{ts,tsx,js,tsx}",
+    "./source/**/*.{ts,tsx,js,tsx}",
   ],
   theme: {
     extend: {
@@ -15,4 +15,5 @@ export default {
   },
   plugins: [],
   important: true,
+  corePlugins: { preflight: false },
 };

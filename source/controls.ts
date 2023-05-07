@@ -1,12 +1,4 @@
-import type { PlasmoCSConfig } from "plasmo";
-
-export const config: PlasmoCSConfig = {
-  matches: ["https://guessthe.game/", "https://guessthe.game/?fpg=*"],
-  run_at: "document_end",
-  all_frames: true,
-};
-
-(function () {
+export function setControls() {
   document.addEventListener("keydown", (event) => {
     if (event.ctrlKey) {
       if (event.key === "ArrowLeft") return moveClue(-1);
@@ -19,11 +11,10 @@ export const config: PlasmoCSConfig = {
     }
     if (!document.activeElement?.className.includes("game-input")) {
       const index = parseInt(event.key) - 1;
-      if (isNaN(index)) return;
-      goToClue(index);
+      if (!isNaN(index)) goToClue(index);
     }
   });
-})();
+}
 
 const clueButtons = document.querySelectorAll<HTMLButtonElement>(
   "div.current-game div.image-selector button:not(.skipButton)"

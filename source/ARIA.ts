@@ -1,18 +1,11 @@
 import fastdom from "fastdom";
-import type { PlasmoCSConfig } from "plasmo";
 
-export const config: PlasmoCSConfig = {
-  matches: ["https://guessthe.game/", "https://guessthe.game/?fpg=*"],
-  run_at: "document_end",
-  all_frames: true,
-};
-
-(function () {
+export function setARIA() {
   setHeaderARIA();
   setClueButtonsARIA();
   setClueImagesARIA();
   setBottomNavARIA();
-})();
+}
 
 function setBottomNavARIA() {
   const bottomNav = document.querySelector("div.countdownControls");
@@ -44,18 +37,10 @@ function setHeaderARIA() {
   if (!header) return;
 
   fastdom.mutate(() => {
-    header
-      .querySelector("button.love-btn")
-      ?.setAttribute("aria-label", "support me");
-    header
-      .querySelector("button.stats-btn")
-      ?.setAttribute("aria-label", "personal statistics");
-    header
-      .querySelector("button.about-btn")
-      ?.setAttribute("aria-label", "about");
-    header
-      .querySelector("button.how-to-play-btn")
-      ?.setAttribute("aria-label", "how to play");
+    header.querySelector("button.love-btn")?.setAttribute("aria-label", "support me");
+    header.querySelector("button.stats-btn")?.setAttribute("aria-label", "personal statistics");
+    header.querySelector("button.about-btn")?.setAttribute("aria-label", "about");
+    header.querySelector("button.how-to-play-btn")?.setAttribute("aria-label", "how to play");
   });
 }
 
@@ -79,11 +64,7 @@ function setClueButtonsARIA() {
     mutations.forEach((mutation) => {
       fastdom.mutate(() => {
         const button = mutation.target;
-        if (
-          !(button instanceof HTMLButtonElement) ||
-          button.className.includes("locked")
-        )
-          return;
+        if (!(button instanceof HTMLButtonElement) || button.className.includes("locked")) return;
         button.removeAttribute("disabled");
       });
     });
