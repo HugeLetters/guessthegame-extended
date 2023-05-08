@@ -3,13 +3,10 @@
   "displayName": "guessthegame extended",
   "version": "0.0.2",
   "description": "A few QoL improvement for the guessthe.game website",
-  "type": "module",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build",
-    "package": "plasmo package",
-    "old:dev": "tailwindcss -o ./dist/index.css -m -w",
-    "old:build": "tailwindcss -o ./dist/index.css -m"
+    "build": "plasmo build --minify",
+    "package": "plasmo package"
   },
   "keywords": [
     "guesstthegame",

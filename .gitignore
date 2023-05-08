@@ -22,3 +22,5 @@ key.json
 
 # typescript
 .tsbuildinfo
+
+test/
