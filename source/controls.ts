@@ -1,14 +1,21 @@
-import { getOption, watchOption } from "./helpers/options";
+import { getOption, setOption, watchOption } from "./helpers/options";
 
 export function setControls() {
-  getOption("controls").then(
-    (value = true) => value && document.addEventListener("keydown", controlEventListener)
-  );
   watchOption("controls", ({ newValue = true }) => {
-    newValue
-      ? document.addEventListener("keydown", controlEventListener)
-      : document.removeEventListener("keydown", controlEventListener);
+    disable();
+    if (newValue) return enable();
   });
+  getOption("controls").then((value) => {
+    if (value) return enable();
+    value ?? setOption("controls", true);
+  });
+}
+
+function enable() {
+  document.addEventListener("keydown", controlEventListener);
+}
+function disable() {
+  document.removeEventListener("keydown", controlEventListener);
 }
 
 function controlEventListener(event: KeyboardEvent) {

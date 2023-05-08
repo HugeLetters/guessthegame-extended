@@ -46,6 +46,9 @@ const optionsStorage = new Storage();
 export function getOption<K extends keyof ExtensionOptions>(key: K) {
   return optionsStorage.get<ExtensionOptions[K] | undefined>(key);
 }
+export function setOption<K extends keyof ExtensionOptions>(key: K, value: ExtensionOptions[K]) {
+  optionsStorage.set(key, value);
+}
 export function watchOption<K extends keyof ExtensionOptions>(
   key: K,
   callback: (payload: { newValue?: ExtensionOptions[K]; oldValue?: ExtensionOptions[K] }) => void

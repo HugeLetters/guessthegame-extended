@@ -3,18 +3,22 @@ import { createRoot } from "react-dom/client";
 import { HiArrowDown, HiArrowLeft, HiArrowRight } from "react-icons/hi";
 import { IconContext } from "react-icons/lib";
 
-import { getOption, watchOption } from "./helpers/options";
+import { getOption, setOption, watchOption } from "./helpers/options";
 import { getGameStatus, getLatestGameIndex, redirectToGameByIndex } from "./helpers/utils";
 
 export function setTopNavigation() {
-  let unmount: () => void = () => void 0;
-  getOption("topNav").then((value = true) => value && (unmount = mountNavigation()));
+  let disable: () => void = () => void 0;
   watchOption("topNav", ({ newValue = true }) => {
-    newValue ? (unmount = mountNavigation()) : unmount();
+    disable();
+    if (newValue) disable = enable();
+  });
+  getOption("topNav").then((value) => {
+    if (value) return (disable = enable());
+    value ?? setOption("topNav", true);
   });
 }
 
-function mountNavigation() {
+function enable() {
   const anchor = document.querySelector<HTMLDivElement>("div.current-game>div.current-game-number");
   if (!anchor) throw new Error("No anchor found for top navbar");
   const style = anchor.getAttribute("style") ?? "";
@@ -26,7 +30,7 @@ function mountNavigation() {
   const root = createRoot(anchor);
   root.render(<NavigationMenu index={index} latestIndex={latestIndex} />);
 
-  return () => {
+  return function disable() {
     root.unmount();
     anchor.innerText = `Game #${index}`;
     anchor.setAttribute("style", style);

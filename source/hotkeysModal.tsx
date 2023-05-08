@@ -2,23 +2,29 @@ import { useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { MdOutlineKeyboardAlt } from "react-icons/md";
 
-import { getOption, useOptions, watchOption } from "./helpers/options";
+import { getOption, setOption, useOptions, watchOption } from "./helpers/options";
 
 export function setHotkeysModal() {
-  let unmount: () => void = () => void 0;
-  getOption("hotkeyModal").then((value = true) => value && (unmount = mountModal()));
-  watchOption("hotkeyModal", ({ newValue = true }) =>
-    newValue ? (unmount = mountModal()) : unmount()
-  );
+  let disable: () => void = () => void 0;
+  watchOption("hotkeyModal", ({ newValue = true }) => {
+    disable();
+    if (newValue) return (disable = enable());
+  });
+  getOption("hotkeyModal").then((value) => {
+    if (value) return (disable = enable());
+    value ?? setOption("hotkeyModal", true);
+  });
 }
 
-function mountModal() {
+function enable() {
   const anchor = document.querySelector("header.Header") ?? document.body;
   const root = document.createElement("div");
   anchor.appendChild(root);
   createRoot(root).render(<HotkeysModal />);
 
-  return () => anchor.removeChild(root);
+  return function disable() {
+    anchor.removeChild(root);
+  };
 }
 
 function HotkeysModal() {
