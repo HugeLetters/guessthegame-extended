@@ -1,6 +1,6 @@
 {
   "name": "guessthegame-extended",
-  "displayName": "guessthe.game extended",
+  "displayName": "guessthegame extended",
   "version": "0.0.2",
   "description": "A few QoL improvement for the guessthe.game website",
   "type": "module",
