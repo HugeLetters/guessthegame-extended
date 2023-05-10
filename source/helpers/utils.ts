@@ -3,6 +3,10 @@ export function getGameStatus(index: number) {
   return localStorage.getItem(`${index}_gamestate`);
 }
 
+export function getGameGuess(gameIndex: number, guessIndex: number) {
+  return localStorage.getItem(`${gameIndex}_guess${guessIndex}`);
+}
+
 export function redirectToGameByIndex(index: number) {
   const destination = new URL("", location.href);
   destination.searchParams.append("fpg", index.toString());

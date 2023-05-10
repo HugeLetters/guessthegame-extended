@@ -46,7 +46,7 @@ function HotkeysModal() {
       </button>
       <dialog className="modal backdrop:backdrop-brightness-[.25]" ref={modal} onClick={closeModal}>
         <div
-          className="absolute w-full h-full top-0 left-0 -z-10"
+          className="absolute left-0 top-0 -z-10 h-full w-full"
           onClick={(e) => e.stopPropagation()}
         ></div>
         <div onClick={(e) => e.stopPropagation()}>

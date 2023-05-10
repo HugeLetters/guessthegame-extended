@@ -2,7 +2,10 @@
  * @type {import('prettier').Options}
  */
 module.exports = {
-  plugins: [require("@plasmohq/prettier-plugin-sort-imports")],
+  plugins: [
+    require("@plasmohq/prettier-plugin-sort-imports"),
+    require("prettier-plugin-tailwindcss"),
+  ],
   importOrder: ["^@plasmohq/(.*)$", "^~(.*)$", "^[./]"],
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,

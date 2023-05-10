@@ -22,7 +22,7 @@ function enable() {
   const anchor = document.querySelector<HTMLDivElement>("div.current-game>div.current-game-number");
   if (!anchor) throw new Error("No anchor found for top navbar");
   const style = anchor.getAttribute("style") ?? "";
-  anchor.removeAttribute("style");
+  setTimeout(() => anchor.removeAttribute("style"));
 
   const latestIndex = getLatestGameIndex();
   const index = parseInt(anchor.innerText.match(/\d+/)?.[0] ?? "") || latestIndex;
@@ -57,7 +57,7 @@ function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
   }, []);
 
   return (
-    <nav className="flex items-center justify-center gap-1 text-neutral-400 mb-2 ">
+    <nav className="mb-2 flex items-center justify-center gap-1 text-neutral-400 ">
       <IconContext.Provider value={{ size: "1.9rem" }}>
         <button
           onClick={() => redirectToGameByIndex(index - 1)}
@@ -73,12 +73,12 @@ function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
         >
           <HiArrowLeft />
         </button>
-        <label className=" p-1 border border-solid rounded-md text-lg">
+        <label className=" rounded-md border border-solid p-1 text-lg">
           <span className="text-lg">Game #</span>
           <select
             onChange={({ target: { value } }) => redirectToGameByIndex(parseInt(value))}
             defaultValue={index}
-            className="bg-transparent text-current border-none text-lg font-[inherit]"
+            className="border-none bg-transparent font-[inherit] text-lg text-current"
           >
             {Array(Math.max(latestIndex, index))
               .fill(1)
@@ -111,7 +111,7 @@ function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
               : nextGameStatus === "lose"
               ? loseClass
               : "bg-transparent text-current"
-          } ${index + 1 > latestIndex ? "border-dashed border-2 border-amber-400" : ""}`}
+          } ${index + 1 > latestIndex ? "border-2 border-dashed border-amber-400" : ""}`}
           aria-label="next game"
         >
           <HiArrowRight />

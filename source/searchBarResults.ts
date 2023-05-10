@@ -1,6 +1,6 @@
 import fastdom from "fastdom";
 
-import { getGameStatus } from "./helpers/utils";
+import { getGameGuess, getGameStatus } from "./helpers/utils";
 
 const guessedGameClass = " bg-emerald-500";
 const triedGameClass =
@@ -135,8 +135,4 @@ function extractGameIndex(key: string) {
 
 function normalizeGameName(name: string) {
   return name.replace(/[-():!]/g, "").toLowerCase();
-}
-
-function getGameGuess(gameIndex: number, guessIndex: number) {
-  return localStorage.getItem(`${gameIndex}_guess${guessIndex}`);
 }

@@ -1,7 +1,5 @@
 import type { PlasmoCSConfig } from "plasmo";
 
-import "../source/index.pcss";
-
 import { setARIA } from "~source/ARIA";
 import { setControls } from "~source/controls";
 import { getOption, setOption } from "~source/helpers/options";
@@ -13,6 +11,7 @@ export const config: PlasmoCSConfig = {
   matches: ["https://guessthe.game/", "https://guessthe.game/?fpg=*"],
   run_at: "document_end",
   all_frames: true,
+  css: ["../source/index.pcss"],
 };
 
 (function () {
