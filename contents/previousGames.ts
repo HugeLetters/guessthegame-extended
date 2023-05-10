@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig } from "plasmo";
 
-import { getGameGuess } from "~source/helpers/utils";
+import { getGameGuess, getLatestGameIndex, redirectToGameByIndex } from "~source/helpers/utils";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://guessthe.game/previous-games"],
@@ -12,6 +12,14 @@ export const config: PlasmoCSConfig = {
 (function () {
   replaceMarquee();
   guessTooltips();
+
+  /*
+    Client-side routing to current game page breaks the extensions.
+    This is the simplest fix for that, sorry.
+  */
+  document
+    .querySelector<HTMLButtonElement>("button.back-to-today-btn")
+    ?.addEventListener("click", () => redirectToGameByIndex(getLatestGameIndex()));
 })();
 
 function replaceMarquee() {

@@ -27,4 +27,12 @@ export const config: PlasmoCSConfig = {
     if (toggle) return setSearchBar();
     if (toggle === undefined) return setOption("searchBar", true), setSearchBar();
   });
+
+  /*
+    Client-side routing to previous-games page breaks the extensions.
+    This is the simplest fix for that, sorry.
+  */
+  document
+    .querySelector<HTMLButtonElement>("button.replay-previous-days")
+    ?.addEventListener("click", () => location.assign("/previous-games"));
 })();

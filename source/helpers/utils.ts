@@ -8,7 +8,7 @@ export function getGameGuess(gameIndex: number, guessIndex: number) {
 }
 
 export function redirectToGameByIndex(index: number) {
-  const destination = new URL("", location.href);
+  const destination = new URL(location.origin);
   destination.searchParams.append("fpg", index.toString());
   location.assign(destination);
 }

@@ -41,7 +41,7 @@ function HotkeysModal() {
 
   return (
     <>
-      <button onClick={openModal}>
+      <button onClick={openModal} aria-label="hotkeys">
         <MdOutlineKeyboardAlt size="100%" />
       </button>
       <dialog className="modal backdrop:backdrop-brightness-[.25]" ref={modal} onClick={closeModal}>
@@ -50,7 +50,8 @@ function HotkeysModal() {
           onClick={(e) => e.stopPropagation()}
         ></div>
         <div onClick={(e) => e.stopPropagation()}>
-          <button onClick={closeModal}>
+          <h3>Hotkeys</h3>
+          <button onClick={closeModal} aria-label="close">
             <svg
               width="25"
               height="25"
@@ -66,17 +67,32 @@ function HotkeysModal() {
               ></path>
             </svg>
           </button>
-          <p>←/→ - previous/next game</p>
-          {topNavOption && <p>ctrl+↓ - latest game</p>}
-          {controlsOption && (
-            <>
-              <p>ctrl+←/→ - previous/next clue</p>
-              <p>1..6 - go to clue by index</p>
-              <p>alt+s- skip guess</p>
-            </>
-          )}
+          <div className="flex flex-col gap-2">
+            <Hotkey keybind="←/→" description="previous/next game" />
+            <Hotkey keybind="ctrl+↓" description="latest game" />
+            {topNavOption && <Hotkey keybind="ctrl+↓" description="latest game" />}
+            {controlsOption && (
+              <>
+                <Hotkey keybind="ctrl+←/→" description="previous/next clue" />
+                <Hotkey keybind="1..6" description="go to clue by index" />
+                <Hotkey keybind="alt+s" description="skip guess" />
+              </>
+            )}
+          </div>
         </div>
       </dialog>
     </>
+  );
+}
+
+type HotkeyProps = {
+  keybind: string;
+  description: string;
+};
+function Hotkey({ keybind, description }: HotkeyProps) {
+  return (
+    <p className="m-0">
+      <code className="text-lg">{keybind}</code> - {description}
+    </p>
   );
 }
