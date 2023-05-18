@@ -2,8 +2,7 @@ import { getOption, setOption, watchOption } from "./helpers/options";
 
 export function setControls() {
   watchOption("controls", ({ newValue = true }) => {
-    disable();
-    if (newValue) return enable();
+    newValue ? enable() : disable();
   });
   getOption("controls").then((value) => {
     if (value) return enable();

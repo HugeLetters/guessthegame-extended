@@ -27,13 +27,13 @@ function replaceMarquee() {
     const parent = node.parentElement;
     if (!parent) return;
     const replacer = document.createElement("span");
-    replacer.innerText = node.innerText;
+    const gameName = node.innerText;
+    replacer.innerText = gameName;
     replacer.className =
       "inline-block whitespace-nowrap group-hover:animate-scroll basis-24 shrink-0";
-    parent.innerHTML = "";
     parent.className += " overflow-hidden inline-flex gap-4 w-24 group";
-    parent.appendChild(replacer);
-    parent.appendChild(replacer.cloneNode(true));
+    replacer.style.animationDuration = `${Math.max(2000, gameName.length * 181)}ms`;
+    parent.replaceChildren(replacer, replacer.cloneNode(true));
   });
 }
 

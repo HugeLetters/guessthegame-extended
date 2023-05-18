@@ -5,12 +5,11 @@ import {
   useOptions,
 } from "~source/helpers/options";
 
-import "~source/popup.pcss";
+import "./popup.pcss";
 
 export default function Popup() {
   return (
     <div className="bg-neutral-700 p-2 font-semibold text-slate-200">
-      <style>{`body{margin:0;}`}</style>
       <div className="flex flex-col gap-2 ">
         {toggledOptions.map((option) => (
           <ToggleOption key={option} optionKey={option} />

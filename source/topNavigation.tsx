@@ -9,11 +9,10 @@ import { getGameStatus, getLatestGameIndex, redirectToGameByIndex } from "./help
 export function setTopNavigation() {
   let disable: () => void = () => void 0;
   watchOption("topNav", ({ newValue = true }) => {
-    disable();
-    if (newValue) disable = enable();
+    newValue ? (disable = enable()) : disable();
   });
   getOption("topNav").then((value) => {
-    if (value) return (disable = enable());
+    if (value) disable = enable();
     value ?? setOption("topNav", true);
   });
 }

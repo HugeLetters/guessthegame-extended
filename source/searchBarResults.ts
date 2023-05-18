@@ -2,7 +2,7 @@ import fastdom from "fastdom";
 
 import { getGameGuess, getGameStatus } from "./helpers/utils";
 
-const guessedGameClass = " bg-emerald-500";
+const guessedGameClass = " !bg-emerald-500";
 const triedGameClass =
   " after:content-[attr(data-tries)_'_tries'] after:text-neutral-900 after:text-xs after:font-extrabold after:bg-neutral-400 after:rounded-md after:py-1 after:px-2 after:ml-1 after:border after:border-solid after:border-neutral-900 after:whitespace-nowrap";
 

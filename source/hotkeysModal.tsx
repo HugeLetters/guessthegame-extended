@@ -7,11 +7,10 @@ import { getOption, setOption, useOptions, watchOption } from "./helpers/options
 export function setHotkeysModal() {
   let disable: () => void = () => void 0;
   watchOption("hotkeyModal", ({ newValue = true }) => {
-    disable();
-    if (newValue) return (disable = enable());
+    newValue ? (disable = enable()) : disable();
   });
   getOption("hotkeyModal").then((value) => {
-    if (value) return (disable = enable());
+    if (value) disable = enable();
     value ?? setOption("hotkeyModal", true);
   });
 }
