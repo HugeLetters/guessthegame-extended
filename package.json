@@ -5,7 +5,7 @@
   "description": "A few QoL improvement for the guessthe.game website",
   "scripts": {
     "dev": "plasmo dev",
-    "build": "plasmo build --minify --source-maps",
+    "build": "plasmo build",
     "package": "plasmo package"
   },
   "keywords": [
@@ -33,7 +33,7 @@
     "@plasmohq/storage": "^1.6.0",
     "autoprefixer": "^10.4.14",
     "fastdom": "^1.0.11",
-    "plasmo": "^0.70.1",
+    "plasmo": "^0.71.0",
     "postcss": "^8.4.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -5,7 +5,7 @@ import {
   useOptions,
 } from "~source/helpers/options";
 
-import "./source/index.pcss";
+import "~source/popup.pcss";
 
 export default function Popup() {
   return (
