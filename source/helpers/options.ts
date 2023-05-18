@@ -1,18 +1,9 @@
 import { Storage } from "@plasmohq/storage";
 import { useStorage } from "@plasmohq/storage/hook";
 
-type OptionMeta = {
-  readonly label: string;
-  readonly needsRestart?: boolean;
-};
-type OptionsMeta = {
-  readonly topNav: OptionMeta;
-  readonly controls: OptionMeta;
-  readonly aria: OptionMeta;
-  readonly searchBar: OptionMeta;
-  readonly hotkeyModal: OptionMeta;
-};
-export const optionsMeta: OptionsMeta = {
+type OptionMeta = { readonly label: string; readonly needsRestart?: boolean };
+type Options = "topNav" | "controls" | "aria" | "searchBar" | "hotkeyModal";
+export const optionsMeta: Readonly<Record<Options, OptionMeta>> = {
   controls: { label: "Controls" },
   topNav: { label: "Top navigation" },
   hotkeyModal: { label: "Hotkeys info menu" },
@@ -26,14 +17,11 @@ export const toggledOptions = [
   "aria",
   "searchBar",
   "hotkeyModal",
-] as const satisfies readonly (keyof typeof optionsMeta)[];
-
-export type ToggledOptions = {
-  [key in (typeof toggledOptions)[number]]: boolean;
-};
+] as const satisfies readonly Options[];
+export type ToggledOptions = Record<(typeof toggledOptions)[number], boolean>;
 
 type OptionsUnion = ToggledOptions;
-type ExtensionOptions = keyof OptionsMeta extends keyof OptionsUnion ? OptionsUnion : never;
+type ExtensionOptions = Options extends keyof OptionsUnion ? OptionsUnion : never;
 
 export function useOptions<K extends keyof ExtensionOptions>(
   key: K,
