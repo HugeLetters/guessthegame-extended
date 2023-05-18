@@ -19,11 +19,6 @@ export default function Popup() {
       <p className="m-0 mt-2 text-center text-[90%]">
         Options with a red border require a page reload for the change to take effect
       </p>
-      <div className="w-fit overflow-hidden">
-        <span className="inline-block whitespace-nowrap hover:animate-scroll">
-          TEXT TEXT TEXT TEXT TEXT
-        </span>
-      </div>
     </div>
   );
 }
