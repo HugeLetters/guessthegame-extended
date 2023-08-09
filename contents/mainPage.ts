@@ -20,12 +20,26 @@ export const config: PlasmoCSConfig = {
   setHotkeysModal();
 
   getOption("aria").then((toggle) => {
-    if (toggle) return setARIA();
-    if (toggle === undefined) return setOption("aria", true), setARIA();
+    switch (toggle) {
+      case true:
+        setARIA();
+        break;
+      case undefined:
+        setOption("aria", true);
+        setARIA();
+        break;
+    }
   });
-  getOption("searchBar").then((toggle = true) => {
-    if (toggle) return setSearchBar();
-    if (toggle === undefined) return setOption("searchBar", true), setSearchBar();
+  getOption("searchBar").then((toggle) => {
+    switch (toggle) {
+      case true:
+        setSearchBar();
+        break;
+      case undefined:
+        setOption("searchBar", true);
+        setSearchBar();
+        break;
+    }
   });
 
   /*

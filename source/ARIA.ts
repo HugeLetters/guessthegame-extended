@@ -1,10 +1,12 @@
 import fastdom from "fastdom";
 
 export function setARIA() {
-  setHeaderARIA();
-  setClueButtonsARIA();
-  setClueImagesARIA();
-  setBottomNavARIA();
+  setTimeout(() => {
+    setHeaderARIA();
+    setClueButtonsARIA();
+    setClueImagesARIA();
+    setBottomNavARIA();
+  }, 2000);
 }
 
 function setBottomNavARIA() {
