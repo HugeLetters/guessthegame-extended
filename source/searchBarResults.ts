@@ -6,12 +6,18 @@ const guessedGameClass = " !bg-emerald-500";
 const triedGameClass =
   " after:content-[attr(data-tries)_'_tries'] after:text-neutral-900 after:text-xs after:font-extrabold after:bg-neutral-400 after:rounded-md after:py-1 after:px-2 after:ml-1 after:border after:border-solid after:border-neutral-900 after:whitespace-nowrap";
 
+let retried = false;
 export function setSearchBar() {
   if (document.querySelector<HTMLDivElement>("div.result")?.innerText.includes("The answer was"))
     return;
 
   const inputNode = document.querySelector("div.input-area");
-  if (!inputNode) return;
+  if (!inputNode) {
+    if (retried) return;
+    retried = true;
+    setTimeout(setSearchBar, 2000);
+    return;
+  }
 
   const guessesData = getGuessesData();
 
