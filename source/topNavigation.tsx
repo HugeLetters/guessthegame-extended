@@ -6,21 +6,45 @@ import { IconContext } from "react-icons/lib";
 import { getOption, setOption, watchOption } from "./helpers/options";
 import { getGameStatus, getLatestGameIndex, redirectToGameByIndex } from "./helpers/utils";
 
+let disable: () => void = () => void 0;
 export function setTopNavigation() {
-  let disable: () => void = () => void 0;
   watchOption("topNav", ({ newValue = true }) => {
-    newValue ? (disable = enable()) : disable();
+    switch (newValue) {
+      case true:
+        disable = enable();
+        break;
+      case false:
+        disable();
+        break;
+    }
   });
+
   getOption("topNav").then((value) => {
-    if (value) disable = enable();
-    value ?? setOption("topNav", true);
+    switch (value) {
+      case true:
+        disable = enable();
+        break;
+      case undefined:
+        setOption("topNav", true);
+        break;
+    }
   });
 }
 
+let retried = false;
 function enable() {
   const anchor = document.querySelector<HTMLDivElement>("div.current-game>div.current-game-number");
-  if (!anchor) throw new Error("No anchor found for top navbar");
-  const style = anchor.getAttribute("style") ?? "";
+  if (!anchor) {
+    console.error("No anchor found for top navbar\nRetrying in 2 seconds once");
+    if (retried) return () => void 0;
+    retried = true;
+
+    setTimeout(() => {
+      disable = enable();
+    }, 2000);
+    return () => void 0;
+  }
+  const style = anchor.getAttribute("style");
   setTimeout(() => anchor.removeAttribute("style"));
 
   const latestIndex = getLatestGameIndex();
@@ -32,14 +56,14 @@ function enable() {
   return function disable() {
     root.unmount();
     anchor.innerText = `Game #${index}`;
-    anchor.setAttribute("style", style);
+    anchor.setAttribute("style", style ?? "");
   };
 }
 
 type NavigationMenuProps = { index: number; latestIndex: number };
 function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
-  const winClass = " bg-win";
-  const loseClass = " bg-fail";
+  const winClass = "bg-win";
+  const loseClass = "bg-fail";
   const prevGameStatus = getGameStatus(index - 1);
   const nextGameStatus = getGameStatus(index + 1);
   const lastGameStatus = getGameStatus(latestIndex);
@@ -88,13 +112,9 @@ function NavigationMenu({ index, latestIndex }: NavigationMenuProps) {
                   <option
                     key={i}
                     value={index}
-                    className={` ${
-                      status === "win"
-                        ? winClass + " text-white"
-                        : status === "lose"
-                        ? loseClass + " text-white"
-                        : "text-neutral-800"
-                    }`}
+                    className={`
+                    ${status === "win" || status === "lose" ? "text-white" : "text-neutral-800"}  
+                    ${status === "win" ? winClass : status === "lose" ? loseClass : ""}`}
                   >
                     {index}
                   </option>
