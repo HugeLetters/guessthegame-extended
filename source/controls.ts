@@ -33,25 +33,44 @@ function controlEventListener(event: KeyboardEvent) {
   }
 }
 
-const clueButtons = document.querySelectorAll<HTMLButtonElement>(
+let clueButtons = document.querySelectorAll<HTMLButtonElement>(
   "div.current-game div.image-selector button:not(.skipButton)"
 );
+function getclueButtons() {
+  if (clueButtons.length) return clueButtons;
+  clueButtons = document.querySelectorAll<HTMLButtonElement>(
+    "div.current-game div.image-selector button:not(.skipButton)"
+  );
+  return clueButtons;
+}
 function moveClue(direction: 1 | -1) {
-  if (!clueButtons) return;
+  const clueButtons = getclueButtons();
+  if (!clueButtons.length) return;
+
   const activeClueIndex = Array.from(clueButtons).findIndex((button) =>
     button.className.includes("active")
   );
   clueButtons[activeClueIndex + direction]?.click();
 }
 function goToClue(index: number) {
-  if (!clueButtons) return;
+  const clueButtons = getclueButtons();
+  if (!clueButtons.length) return;
+
   clueButtons[index]?.click();
 }
 
-const skipButton = document.querySelector<HTMLButtonElement>(
+let skipButton = document.querySelector<HTMLButtonElement>(
   "div.current-game div.image-selector button.skipButton"
 );
+function getSkipButton() {
+  if (skipButton) return skipButton;
+  skipButton = document.querySelector<HTMLButtonElement>(
+    "div.current-game div.image-selector button.skipButton"
+  );
+  return skipButton;
+}
 function skip() {
+  const skipButton = getSkipButton();
   if (!skipButton) return;
   skipButton.click();
 }

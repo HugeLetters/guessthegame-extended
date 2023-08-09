@@ -10,6 +10,7 @@
     // my settings overrides
     "strict": true,
     "isolatedModules": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "noUncheckedIndexedAccess": true
   }
 }
