@@ -4,20 +4,46 @@ import { MdOutlineKeyboardAlt } from "react-icons/md";
 
 import { getOption, setOption, useOptions, watchOption } from "./helpers/options";
 
+let disable: () => void = () => void 0;
 export function setHotkeysModal() {
-  let disable: () => void = () => void 0;
   watchOption("hotkeyModal", ({ newValue = true }) => {
-    newValue ? (disable = enable()) : disable();
+    switch (newValue) {
+      case true:
+        disable = enable();
+        break;
+      case false:
+        disable();
+        break;
+    }
   });
   getOption("hotkeyModal").then((value) => {
-    if (value) disable = enable();
-    value ?? setOption("hotkeyModal", true);
+    switch (value) {
+      case true:
+        disable = enable();
+        break;
+      case undefined:
+        setOption("hotkeyModal", true);
+        break;
+    }
   });
 }
 
+let retried = false;
 function enable() {
-  const anchor = document.querySelector("header.Header") ?? document.body;
+  const anchor = document.querySelector("header.Header");
+  if (!anchor) {
+    console.error("No anchor found for hotkey button\nRetrying in 2 seconds once");
+    if (retried) return () => void 0;
+    retried = true;
+
+    setTimeout(() => {
+      disable = enable();
+    }, 2000);
+    return () => void 0;
+  }
+
   const root = document.createElement("div");
+  root.className = "flex items-center";
   anchor.appendChild(root);
   createRoot(root).render(<HotkeysModal />);
 
@@ -40,17 +66,27 @@ function HotkeysModal() {
 
   return (
     <>
-      <button onClick={openModal} aria-label="hotkeys">
+      <button
+        onClick={openModal}
+        aria-label="hotkeys"
+      >
         <MdOutlineKeyboardAlt size="100%" />
       </button>
-      <dialog className="modal backdrop:backdrop-brightness-[.25]" ref={modal} onClick={closeModal}>
+      <dialog
+        className="modal backdrop:backdrop-brightness-[.25]"
+        ref={modal}
+        onClick={closeModal}
+      >
         <div
           className="absolute left-0 top-0 -z-10 h-full w-full"
           onClick={(e) => e.stopPropagation()}
         ></div>
         <div onClick={(e) => e.stopPropagation()}>
-          <h3>Hotkeys</h3>
-          <button onClick={closeModal} aria-label="close">
+          <button
+            onClick={closeModal}
+            aria-label="close"
+            className="close-modal"
+          >
             <svg
               width="25"
               height="25"
@@ -66,15 +102,32 @@ function HotkeysModal() {
               ></path>
             </svg>
           </button>
+          <h3>Hotkeys</h3>
           <div className="flex flex-col gap-2">
-            <Hotkey keybind="←/→" description="previous/next game" />
-            <Hotkey keybind="ctrl+↓" description="latest game" />
-            {topNavOption && <Hotkey keybind="ctrl+↓" description="latest game" />}
+            <Hotkey
+              keybind="←/→"
+              description="previous/next game"
+            />
+            {topNavOption && (
+              <Hotkey
+                keybind="ctrl+↓"
+                description="latest game"
+              />
+            )}
             {controlsOption && (
               <>
-                <Hotkey keybind="ctrl+←/→" description="previous/next clue" />
-                <Hotkey keybind="1..6" description="go to clue by index" />
-                <Hotkey keybind="alt+s" description="skip guess" />
+                <Hotkey
+                  keybind="ctrl+←/→"
+                  description="previous/next clue"
+                />
+                <Hotkey
+                  keybind="1..6"
+                  description="go to clue by index"
+                />
+                <Hotkey
+                  keybind="alt+s"
+                  description="skip guess"
+                />
               </>
             )}
           </div>

@@ -44,6 +44,7 @@ function enable() {
     }, 2000);
     return () => void 0;
   }
+
   const style = anchor.getAttribute("style");
   setTimeout(() => anchor.removeAttribute("style"));
 

@@ -10,4 +10,5 @@ module.exports = {
   importOrderSeparation: true,
   importOrderSortSpecifiers: true,
   printWidth: 100,
+  singleAttributePerLine: true,
 };
